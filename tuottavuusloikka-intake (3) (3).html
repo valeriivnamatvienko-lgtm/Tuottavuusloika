@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tuottavuusloikka™ – Ennen varaamista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  #kajabi-form {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+/* ── TOKENS ─────────────────────────── */
+:root {
+  --navy:   #1e3a5f;
+  --navy2:  #162d4e;
+  --navy3:  #0d1f35;
+  --gold:   #f6ad55;
+  --gold2:  #d69e2e;
+  --white:  #ffffff;
+  --off:    #f7fafc;
+  --grey1:  #e2e8f0;
+  --grey2:  #a0aec0;
+  --grey3:  #718096;
+  --dark:   #2d3748;
+  --serif:  'Playfair Display', Georgia, serif;
+  --sans:   'DM Sans', system-ui, sans-serif;
+  --ease:   cubic-bezier(.22,.68,0,1.2);
+  --radius: 16px;
+}
+
+.wa-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  z-index: 999;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+
+.wa-float svg {
+  width: 28px;
+  height: 28px;
+  fill: white;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: var(--sans);
+  background: var(--navy3);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* animated background grid */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(246,173,85,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246,173,85,.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: gridDrift 24s linear infinite;
+  pointer-events: none;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 80% 10%, rgba(246,173,85,.06), transparent 60%),
+              radial-gradient(ellipse 50% 50% at 10% 90%, rgba(30,58,95,.7), transparent);
+  pointer-events: none;
+}
+@keyframes gridDrift { from { background-position: 0 0; } to { background-position: 56px 56px; } }
+
+/* ── CARD ───────────────────────────── */
+.card {
+  position: relative; z-index: 1;
+  background: rgba(22, 45, 78, 0.82);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(246,173,85,.18);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 620px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+  animation: cardIn .7s var(--ease) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(32px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* gold top stripe */
+.card::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold2), var(--gold), var(--gold2));
+}
+
+/* ── HEADER ─────────────────────────── */
+.card-header {
+  padding: 36px 44px 28px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.brand {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: .01em;
+  margin-bottom: 16px;
+  color: var(--white);
+}
+.brand span { color: var(--gold); }
+.card-title {
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.card-title em { color: var(--gold); font-style: italic; }
+.card-sub {
+  font-size: .9rem;
+  color: var(--grey2);
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ── PROGRESS ───────────────────────── */
+.progress-wrap {
+  padding: 20px 44px 0;
+}
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.progress-label {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--grey3);
+  transition: color .3s;
+}
+.progress-label.active { color: var(--gold); }
+.progress-label.done   { color: var(--grey2); }
+.progress-track {
+  height: 3px;
+  background: rgba(255,255,255,.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold2), var(--gold));
+  border-radius: 2px;
+  transition: width .5s var(--ease);
+}
+
+/* ── FORM BODY ──────────────────────── */
+.card-body {
+  padding: 28px 44px 36px;
+}
+
+/* question step */
+.step {
+  display: none;
+  animation: stepIn .45s var(--ease) both;
+}
+.step.active { display: block; }
+@keyframes stepIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.step-num::before {
+  content: '';
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: rgba(246,173,85,.15);
+  border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem;
+  font-weight: 900;
+  color: var(--gold);
+  /* number via attr */
+}
+.step-q {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+.step-hint {
+  font-size: .84rem;
+  color: var(--grey2);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* radio options */
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option {
+  position: relative;
+  cursor: pointer;
+}
+.option input[type="radio"] {
+  position: absolute; opacity: 0; width: 0; height: 0;
+}
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  font-size: .93rem;
+  color: var(--grey1);
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .15s var(--ease);
+  user-select: none;
+}
+.option-label:hover {
+  background: rgba(246,173,85,.06);
+  border-color: rgba(246,173,85,.25);
+  transform: translateX(3px);
+}
+.option input:checked + .option-label {
+  background: rgba(246,173,85,.1);
+  border-color: var(--gold);
+  color: var(--white);
+}
+.option-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--grey3);
+  flex-shrink: 0;
+  transition: border-color .2s, background .2s;
+  position: relative;
+}
+.option input:checked + .option-label .option-dot {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+.option input:checked + .option-label .option-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--navy3);
+}
+
+/* textarea */
+.textarea-wrap {
+  position: relative;
+}
+textarea {
+  width: 100%;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: var(--sans);
+  font-size: .93rem;
+  color: var(--white);
+  resize: vertical;
+  min-height: 110px;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  line-height: 1.6;
+}
+textarea::placeholder { color: var(--grey3); }
+textarea:focus {
+  border-color: var(--gold);
+  background: rgba(246,173,85,.05);
+}
+.char-count {
+  text-align: right;
+  font-size: .75rem;
+  color: var(--grey3);
+  margin-top: 6px;
+}
+
+/* text input */
+input[type="text"], input[type="email"] {
+  width: 100%;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: var(--sans);
+  font-size: .95rem;
+  color: var(--white);
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+input[type="text"]::placeholder,
+input[type="email"]::placeholder { color: var(--grey3); }
+input[type="text"]:focus,
+input[type="email"]:focus {
+  border-color: var(--gold);
+  background: rgba(246,173,85,.05);
+}
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.input-group { display: flex; flex-direction: column; gap: 6px; }
+.input-group label {
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--grey2);
+}
+
+/* ── NAV BUTTONS ────────────────────── */
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+  gap: 12px;
+}
+.btn-back {
+  background: none;
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--grey2);
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-family: var(--sans);
+  font-size: .9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, transform .15s var(--ease);
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-back:hover {
+  border-color: rgba(255,255,255,.3);
+  color: var(--white);
+  transform: translateX(-2px);
+}
+.btn-next {
+  background: var(--gold);
+  color: var(--navy3);
+  border: none;
+  padding: 13px 32px;
+  border-radius: 50px;
+  font-family: var(--sans);
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .25s var(--ease), box-shadow .25s, opacity .2s;
+  display: flex; align-items: center; gap: 8px;
+  flex: 1;
+  justify-content: center;
+  max-width: 280px;
+  margin-left: auto;
+}
+.btn-next:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 28px rgba(246,173,85,.4);
+}
+.btn-next:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+.btn-next svg { transition: transform .2s; }
+.btn-next:hover:not(:disabled) svg { transform: translateX(4px); }
+
+/* ── SUCCESS SCREEN ─────────────────── */
+#success {
+  display: none;
+  padding: 48px 44px;
+  text-align: center;
+  animation: stepIn .5s var(--ease) both;
+}
+.success-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: rgba(246,173,85,.12);
+  border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 2rem;
+  animation: popIn .5s var(--ease) .2s both;
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.success-title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+.success-title em { color: var(--gold); font-style: italic; }
+.success-body {
+  font-size: .95rem;
+  color: var(--grey2);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn-calendar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: var(--navy3);
+  padding: 15px 36px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: transform .25s var(--ease), box-shadow .25s;
+  animation: fadeUp .5s var(--ease) .4s both;
+}
+.btn-calendar:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 36px rgba(246,173,85,.45);
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.success-note {
+  font-size: .78rem;
+  color: var(--grey3);
+  margin-top: 16px;
+}
+
+/* ── FOOTER ─────────────────────────── */
+.card-footer {
+  padding: 16px 44px 20px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.lock-icon { font-size: .85rem; opacity: .5; }
+.card-footer span {
+  font-size: .75rem;
+  color: var(--grey3);
+}
+
+/* ── RESPONSIVE ─────────────────────── */
+@media (max-width: 520px) {
+  .card-header, .card-body, .card-footer { padding-left: 24px; padding-right: 24px; }
+  .progress-wrap { padding: 16px 24px 0; }
+  .input-row { grid-template-columns: 1fr; }
+  #success { padding: 36px 24px; }
+  .card-title { font-size: 1.3rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="mainCard">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <div class="brand">Tuottavuusloikka<span>™</span></div>
+    <h1 class="card-title">Ennen kuin varaat ajan –<br/><em>muutama kysymys</em></h1>
+    <p class="card-sub">Vastauksesi auttavat minua valmistautumaan juuri sinun tilanteeseesi. Täyttää alle 2 minuutissa.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-labels" id="progressLabels">
+      <span class="progress-label active" data-step="1">Tilanne</span>
+      <span class="progress-label" data-step="2">Tavoite</span>
+      <span class="progress-label" data-step="3">Tekoäly</span>
+      <span class="progress-label" data-step="4">Yhteystiedot</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:25%"></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="card-body" id="formBody">
+
+    <!-- STEP 1 -->
+    <div class="step active" id="step1">
+      <div class="step-num">Kysymys 1 / 4</div>
+      <h2 class="step-q">Mikä kuvaa parhaiten nykyistä tilannettasi?</h2>
+      <p class="step-hint">Valitse tilannettasi parhaiten kuvaava vaihtoehto.</p>
+      <div class="options">
+        <label class="option">
+          <input type="radio" name="q1" value="a"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Hukun operatiiviseen kiireeseen – strategia jää paperin tasolla
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q1" value="b"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Tiedän mihin tähtään, mutta aika ei riitä tärkeille asioille
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q1" value="c"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Haluan ottaa tekoälyn haltuun johtamisessa, en tiedä mistä aloittaa
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q1" value="d"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Molemmat – sekä ajanhallinta että tekoäly ovat kehityskohteita
+          </span>
+        </label>
+      </div>
+      <div class="btn-row">
+        <div></div>
+        <button class="btn-next" id="next1" onclick="goNext(1)" disabled>
+          Seuraava
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="step2">
+      <div class="step-num">Kysymys 2 / 4</div>
+      <h2 class="step-q">Mikä on tärkein tavoitteesi seuraavalle 90 päivälle?</h2>
+      <p class="step-hint">Valitse yksi – se, joka on juuri nyt polttavin.</p>
+      <div class="options">
+        <label class="option">
+          <input type="radio" name="q2" value="a"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Vapautua operatiivisesta kiireestä ja saada enemmän aikaa strategialle
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q2" value="b"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Saada strategiani vihdoin toteutumaan käytännössä
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q2" value="c"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Oppia käyttämään tekoälyä tehokkaasti johtamisessa
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q2" value="d"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Vähentää stressiä ja saada hallinnan tunne takaisin
+          </span>
+        </label>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goBack(2)">
+          ← Takaisin
+        </button>
+        <button class="btn-next" id="next2" onclick="goNext(2)" disabled>
+          Seuraava
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" id="step3">
+      <div class="step-num">Kysymys 3 / 4</div>
+      <h2 class="step-q">Miten käytät tekoälyä tällä hetkellä työssäsi?</h2>
+      <p class="step-hint">Rehellisin vastaus on paras – ei oikeita tai vääriä vastauksia.</p>
+      <div class="options">
+        <label class="option">
+          <input type="radio" name="q3" value="a"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            En juuri lainkaan – en tiedä miten se hyödyttäisi minua
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q3" value="b"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Satunnaisesti – kokeilen silloin tällöin mutta ei systemaattisesti
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q3" value="c"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Viestintään ja tekstien kirjoittamiseen, muuhun ei niinkään
+          </span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q3" value="d"/>
+          <span class="option-label">
+            <span class="option-dot"></span>
+            Käytän aktiivisesti – halusin syventää strategiseen johtamiseen
+          </span>
+        </label>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goBack(3)">
+          ← Takaisin
+        </button>
+        <button class="btn-next" id="next3" onclick="goNext(3)" disabled>
+          Seuraava
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step" id="step4">
+      <div class="step-num">Kysymys 4 / 4</div>
+      <h2 class="step-q">Kuka olet ja miten tavoitan sinut?</h2>
+      <p class="step-hint">Tiedot auttavat minua valmistautumaan puheluun. Ei roskapostia – lupaus.</p>
+      <div class="input-row">
+        <div class="input-group">
+          <label for="fname">Etunimi *</label>
+          <input type="text" id="fname" placeholder="Mikko" autocomplete="given-name"/>
+        </div>
+        <div class="input-group">
+          <label for="lname">Sukunimi *</label>
+          <input type="text" id="lname" placeholder="Mäkinen" autocomplete="family-name"/>
+        </div>
+      </div>
+      <div class="input-group" style="margin-bottom:12px">
+        <label for="email">Sähköposti *</label>
+        <input type="email" id="email" placeholder="mikko.makinen@yritys.fi" autocomplete="email"/>
+      </div>
+      <div class="input-group" style="margin-bottom:12px">
+        <label for="company">Yritys ja rooli</label>
+        <input type="text" id="company" placeholder="Esim. Toimitusjohtaja, Yritys Oy"/>
+      </div>
+      <div class="input-group">
+        <label for="extra">Mitä muuta haluaisit kertoa ennen puhelua? <span style="font-weight:300;text-transform:none;letter-spacing:0">(vapaaehtoinen)</span></label>
+        <div class="textarea-wrap">
+          <textarea id="extra" placeholder="Esim. yrityksesi koko, toimiala, erityinen haaste..." maxlength="400" oninput="updateChar()"></textarea>
+        </div>
+        <div class="char-count"><span id="charCount">0</span> / 400</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goBack(4)">
+          ← Takaisin
+        </button>
+        <button class="btn-next" id="next4" onclick="submitForm()" disabled>
+          Jatka varaukseen
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /card-body -->
+
+  <!-- SUCCESS -->
+  <div id="success">
+    <div class="success-icon">✓</div>
+    <h2 class="success-title">Loistava, <em id="successName">hienoa</em>!</h2>
+    <p class="success-body">
+      Vastauksesi on tallennettu. Nyt pääset valitsemaan sinulle sopivan ajan kalenteristani.<br/><br/>
+      Olen perehtynyt tilanteeseesi etukäteen – puhelu on täysin räätälöity juuri sinulle.
+    </p>
+    <a href="https://calendar.app.google/7tJPCrYdwsSqWWF39"
+       id="calendarBtn"
+       class="btn-calendar"
+       target="_blank">
+      Valitse aika kalenterista
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3.75 9h10.5M9.75 4.5l4.5 4.5-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <p class="success-note">Saat vahvistuksen sähköpostiisi varauksen jälkeen.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="card-footer">
+    <span class="lock-icon">🔒</span>
+    <span>Tietosi ovat turvassa – ei myydä tai jaeta kolmansille osapuolille</span>
+  </div>
+
+</div><!-- /card -->
+
+<script>
+// ─── STATE ───────────────────────────────────────────────
+let currentStep = 1;
+const totalSteps = 4;
+const answers = {};
+
+// ─── RADIO LISTENERS ─────────────────────────────────────
+document.querySelectorAll('input[type="radio"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const step = this.name.replace('q', '');
+    answers[this.name] = this.value;
+    const btn = document.getElementById('next' + step);
+    if (btn) btn.disabled = false;
+  });
+});
+
+// ─── STEP 4 VALIDATION ───────────────────────────────────
+function validateStep4() {
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  document.getElementById('next4').disabled = !(fname && lname && emailValid);
+}
+['fname','lname','email'].forEach(id => {
+  document.getElementById(id).addEventListener('input', validateStep4);
+});
+
+// ─── CHAR COUNTER ─────────────────────────────────────────
+function updateChar() {
+  const len = document.getElementById('extra').value.length;
+  document.getElementById('charCount').textContent = len;
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────
+function goNext(step) {
+  if (step < totalSteps) {
+    showStep(step + 1);
+  }
+}
+function goBack(step) {
+  if (step > 1) showStep(step - 1);
+}
+
+function showStep(n) {
+  // hide current
+  document.getElementById('step' + currentStep).classList.remove('active');
+  // show new
+  currentStep = n;
+  document.getElementById('step' + n).classList.add('active');
+  // update progress
+  const pct = (n / totalSteps) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  // update labels
+  document.querySelectorAll('.progress-label').forEach(el => {
+    const s = parseInt(el.dataset.step);
+    el.classList.remove('active','done');
+    if (s === n)    el.classList.add('active');
+    if (s < n)      el.classList.add('done');
+  });
+  // scroll to top of card
+  document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function submitForm() {
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const company = document.getElementById('company').value.trim();
+  const extra = document.getElementById('extra').value.trim();
+
+  const q1 = document.querySelector('input[name="q1"]:checked')?.value || "";
+  const q2 = document.querySelector('input[name="q2"]:checked')?.value || "";
+  const q3 = document.querySelector('input[name="q3"]:checked')?.value || "";
+
+  const fullName = `${fname} ${lname}`.trim();
+
+  const kajabiForm = await waitForKajabiForm();
+
+  if (!kajabiForm) {
+    alert("Kajabi form not loaded");
+    return;
+  }
+
+  const fields = kajabiForm.querySelectorAll(
+    'input:not([type="hidden"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]), textarea'
+  );
+
+  fields[0].value = fullName;
+  fields[1].value = email;
+  fields[2].value = q1;
+  fields[3].value = q2;
+  fields[4].value = q3;
+  fields[5].value = company;
+  fields[6].value = extra;
+
+  // ВОТ ГЛАВНАЯ МАГИЯ 💅
+  kajabiForm.setAttribute("target", "kajabi-hidden-frame");
+  kajabiForm.submit();
+
+  // показываем твою success страницу
+  document.getElementById('successName').textContent = fname;
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('formBody').style.display = 'none';
+  document.getElementById('success').style.display = 'block';
+}
+
+function waitForKajabiForm() {
+  return new Promise((resolve) => {
+    let tries = 0;
+
+    const timer = setInterval(() => {
+      const form =
+        document.querySelector('#kajabi-form form') ||
+        document.querySelector('form[action*="kubera"]') ||
+        document.querySelector('form[action*="kajabi"]');
+
+      if (form) {
+        clearInterval(timer);
+        resolve(form);
+        return;
+      }
+
+      tries++;
+      if (tries > 80) {
+        clearInterval(timer);
+        console.log("Kajabi form not found");
+        console.log("kajabi-form container:", document.getElementById('kajabi-form')?.innerHTML);
+        console.log("all forms on page:", document.querySelectorAll('form'));
+        resolve(null);
+      }
+    }, 250);
+  });
+}
+</script>
+
+<a href="https://wa.me/380731042747?text=Soita%20t%C3%A4st%C3%A4%20WhatsApp-puhelu" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path fill="white" d="M20.52 3.48A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.14 1.59 5.95L0 24l6.31-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.17-1.23-6.15-3.37-8.42ZM12 21.3h-.01a9.4 9.4 0 0 1-4.8-1.32l-.34-.2-3.74.98 1-3.64-.22-.36a9.42 9.42 0 0 1-1.45-5c0-5.2 4.23-9.43 9.43-9.43 2.52 0 4.88.98 6.66 2.76a9.35 9.35 0 0 1 2.76 6.66c0 5.2-4.23 9.43-9.42 9.43Zm5.17-7.03c-.28-.14-1.65-.82-1.9-.91-.26-.1-.45-.14-.64.14-.19.28-.73.91-.9 1.1-.17.19-.33.21-.61.07-.28-.14-1.18-.43-2.24-1.37-.83-.74-1.39-1.65-1.56-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.49.14-.17.19-.28.28-.47.1-.19.05-.35-.02-.49-.07-.14-.63-1.53-.87-2.1-.23-.55-.47-.48-.64-.49h-.54c-.19 0-.49.07-.75.35-.26.28-.98.96-.98 2.36 0 1.39 1.01 2.74 1.15 2.93.14.19 1.98 3.03 4.79 4.25.67.29 1.19.47 1.6.6.67.21 1.28.18 1.76.11.54-.08 1.65-.68 1.88-1.34.23-.66.23-1.2.16-1.32-.07-.12-.26-.19-.54-.33Z"/>
+  </svg>
+</a>
+
+<iframe name="kajabi-hidden-frame" id="kajabi-hidden-frame" style="display:none;"></iframe>
+<div id="kajabi-form"></div>
+<script src="https://www.kubera.fi/forms/2149533978/embed.js"></script>
+
+</body>
+</html>
